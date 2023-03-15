@@ -1,0 +1,11 @@
+.main {
+  padding-left: 10rem;
+}
+
+.logo {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+    padding: 20px;
+}

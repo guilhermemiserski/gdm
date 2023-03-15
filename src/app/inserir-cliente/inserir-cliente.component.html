@@ -1,0 +1,38 @@
+<form (submit)="enviarCliente()" [formGroup]="clienteForm" class="needs-validation" novalidate>
+    <div class="form-group">
+      <label for="nome">Nome:</label>
+      <input type="text" class="form-control" formControlName="nome" id="nome" required>
+      <div *ngIf="submitted && clienteForm.controls['nome'].invalid" class="invalid-feedback">
+        Por favor, insira um nome válido.
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="cpf">CPF:</label>
+      <input type="text" class="form-control" formControlName="cpf" id="cpf" [mask]="'000.000.000-00'" required>
+      <div *ngIf="submitted && clienteForm.controls['cpf'].invalid" class="invalid-feedback">
+        Por favor, insira um CPF válido.
+      </div>
+      <div *ngIf="submitted && !cpfValido" class="invalid-feedback">
+        Por favor, insira um CPF válido.
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="endereco">Endereço:</label>
+      <input type="text" class="form-control" formControlName="endereco" id="endereco" required>
+      <div *ngIf="submitted && clienteForm.controls['endereco'].invalid" class="invalid-feedback">
+        Por favor, insira um endereço válido.
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="telefone">Número de telefone:</label>
+      <input type="text" class="form-control" formControlName="telefone" id="telefone" required>
+      <div *ngIf="submitted && clienteForm.controls['telefone'].invalid" class="invalid-feedback">
+        Por favor, insira um número de telefone válido.
+      </div>
+    </div>
+  
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+  </form>

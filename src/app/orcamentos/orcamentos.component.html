@@ -1,0 +1,47 @@
+<div class="container-fluid">
+  <div class="row">
+    <app-sidebar></app-sidebar>
+
+    <div class="main">
+      <div class="container">
+        <h2 class="text-center mb-5 mt-3">Orçamentos</h2>
+        <div *ngFor="let orcamento of orcamentos">
+          <div class="card m-5">
+            <div class="card-body">
+              <h5 class="card-title">{{ orcamento.cliente }}</h5>
+              <p class="card-text">
+                <span class="fw-bold">Endereço:</span> {{ orcamento.endereco }}
+                <br />
+                <span class="fw-bold">Data de validade:</span>
+                {{ orcamento.validade | date : "dd/MM/yyyy" }}
+              </p>
+              <p class="card-text">
+                <span class="fw-bold">Itens:</span>
+              </p>
+
+              <ul class="list-unstyled">
+                <li *ngFor="let item of orcamento.itens">
+                  {{ item.quantidade }}x {{ item.nome }} -
+                  {{ item.valor | currency : "BRL" }}
+                </li>
+              </ul>
+              <p class="card-text">
+                <span class="fw-bold">Total:</span>
+                {{ orcamento.total | currency : "BRL" }}
+              </p>
+              <div class="mb-3">
+                <app-orcamento-pdf [orcamento]="orcamento"></app-orcamento-pdf>
+              </div>
+              <button
+                class="btn btn-danger"
+                (click)="deletarOrcamento(orcamento)"
+              >
+                Excluir
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

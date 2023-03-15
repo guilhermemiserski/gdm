@@ -1,0 +1,199 @@
+<div class="container-fluid">
+  <div class="row">
+    <app-sidebar></app-sidebar>
+
+    <div class="main">
+      <h2 class="text-center mt-3">Novo orçamento</h2>
+
+      <form class="m-5" [formGroup]="orcamentoForm" (ngSubmit)="onSubmit()">
+        <div class="form-group mb-3">
+          <label for="cliente">Cliente:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="cliente"
+            formControlName="cliente"
+            placeholder="Fulano da Silva"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              orcamentoForm.controls['cliente'].invalid &&
+              (orcamentoForm.controls['cliente'].dirty ||
+                orcamentoForm.controls['cliente'].touched)
+            "
+          >
+            Campo obrigatório
+          </div>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="endereco">Endereço:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="endereco"
+            formControlName="endereco"
+            placeholder="Rua Anita Garibaldi, 322"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              orcamentoForm.controls['endereco'].invalid &&
+              (orcamentoForm.controls['endereco'].dirty ||
+                orcamentoForm.controls['endereco'].touched)
+            "
+          >
+            Campo obrigatório
+          </div>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="validade">Validade:</label>
+          <input
+            type="date"
+            class="form-control"
+            id="validade"
+            formControlName="validade"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              orcamentoForm.controls['validade'].invalid &&
+              (orcamentoForm.controls['validade'].dirty ||
+                orcamentoForm.controls['validade'].touched)
+            "
+          >
+            Campo obrigatório
+          </div>
+        </div>
+
+        <div>
+          <h3>Itens:</h3>
+          <p *ngIf="orcamento.itens.length == 0">Você ainda não inseriu nenhum item para esse orçamento</p>
+          <div
+            *ngFor="let item of orcamento.itens; let i = index"
+            class="row align-items-center mb-2"
+          >
+            <div class="col-8">
+              {{ item.nome }} ({{ item.quantidade }} x {{ item.valor | currency:"BRL" }}) = 
+              {{ item.quantidade * item.valor | currency:"BRL"}}
+            </div>
+            <div class="col-4 text-right">
+              <button
+                type="button"
+                class="btn btn-sm btn-danger"
+                (click)="removerItem(i)"
+              >
+                Remover
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="nomeItem">Nome do item:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="nomeItem"
+            formControlName="nomeItem"
+            placeholder="Janela vidro temperado 1x1"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              orcamentoForm.controls['nomeItem'].invalid &&
+              (orcamentoForm.controls['nomeItem'].dirty ||
+                orcamentoForm.controls['nomeItem'].touched)
+            "
+          >
+            Campo obrigatório
+          </div>
+        </div>
+        <div class="form-group mb-3">
+          <label for="quantidade">Quantidade:</label>
+          <input
+            type="text"
+            id="quantidade"
+            formControlName="quantidade"
+            class="form-control"
+            placeholder="2"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              orcamentoForm.controls['quantidade'].invalid &&
+              (orcamentoForm.controls['quantidade'].dirty ||
+                orcamentoForm.controls['quantidade'].touched)
+            "
+          >
+            <div *ngIf="orcamentoForm.controls['quantidade'].errors.required">
+              Campo obrigatório
+            </div>
+            <div *ngIf="orcamentoForm.controls['quantidade'].errors.min">
+              Quantidade deve ser maior do que zero
+            </div>
+          </div>
+        </div>
+        <div class="form-group mb-3">
+          <label for="valor">Valor unitário:</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">R$</span>
+            </div>
+            <input
+              type="text"
+              currency="BRL"
+              id="valor"
+              formControlName="valor"
+              step="0.01"
+              class="form-control"
+              placeholder="200.00"
+            />
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              orcamentoForm.controls['valor'].invalid &&
+              (orcamentoForm.controls['valor'].dirty ||
+                orcamentoForm.controls['valor'].touched)
+            "
+          >
+            <div *ngIf="orcamentoForm.controls['valor'].errors.required">
+              Campo obrigatório
+            </div>
+            <div *ngIf="orcamentoForm.controls['valor'].errors.min">
+              Valor deve ser maior do que zero
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="btn btn-primary btn-lg mb-3 mt-3"
+          [disabled]="
+            !orcamentoForm.get('quantidade').valid ||
+            !orcamentoForm.get('valor').valid ||
+            !orcamentoForm.get('nomeItem').valid
+          "
+          (click)="adicionarItem()"
+        >
+          Adicionar item
+        </button>
+
+        <br />
+
+        <button
+          type="submit"
+          class="btn btn-primary btn-lg"
+          [disabled]="
+            !orcamentoForm.get('cliente').valid || orcamento.itens.length == 0
+          "
+        >
+          Enviar orçamento
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
