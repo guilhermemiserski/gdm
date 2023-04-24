@@ -6,7 +6,7 @@
 
     <div class="main col-11">
       <div class="container">
-        <h2 class="text-center mt-3">Orçamentos</h2>
+        <h2 class="text-center mt-3">Pagamentos</h2>
 
         <div class="row m-5">
           <div class="d-flex">
@@ -15,7 +15,7 @@
               <input
                 matInput
                 [(ngModel)]="searchTerm"
-                (ngModelChange)="searchOrcamentos()"
+                (ngModelChange)="searchContas()"
               />
               <mat-icon color="accent" matSuffix>search</mat-icon>
             </mat-form-field>
@@ -23,7 +23,7 @@
         </div>
 
         <mat-card
-          *ngFor="let orcamento of orcamentosFiltered"
+          *ngFor="let conta of contasFiltered"
           class="mat-elevation-z2 m-5"
         >
           <mat-card-header style="place-content: space-between">
@@ -32,71 +32,40 @@
                 <label class="switch" style="margin-right: 1rem">
                   <input
                     type="checkbox"
-                    [checked]="orcamento.cliente_aceitou"
-                    (click)="toggleClienteAceitou(orcamento)"
+                    [checked]="conta.pago"
+                    (click)="toggleClientePagou(conta)"
                   />
                   <span class="slider"></span>
                 </label>
               </div>
               <mat-icon style="font-size: 24px">{{
-                orcamento.cliente_aceitou ? "done" : "schedule"
+                conta.pago ? "done" : "close"
               }}</mat-icon>
             </div>
             <mat-card-title style="font-size: 24px">{{
-              orcamento.cliente.nome
+              conta.cliente.nome
             }}</mat-card-title>
             <mat-card-subtitle class="mb-3">
               <span class="bold-text" style="font-size: 16px">Endereço: </span>
-              <span style="font-size: 16px">{{
-                orcamento.cliente.endereco
-              }}</span
+              <span style="font-size: 16px">{{ conta.cliente.endereco }}</span
               ><br />
               <span class="bold-text" style="font-size: 16px"
                 >Data de validade:
               </span>
               <span style="font-size: 16px">{{
-                orcamento.validade | date : "dd/MM/yyyy"
+                conta.validade | date : "dd/MM/yyyy"
               }}</span>
             </mat-card-subtitle>
           </mat-card-header>
 
           <mat-card-content>
-            <p class="bold-text" style="font-size: 20px">Itens</p>
-            <ul class="list-unstyled" style="font-size: 16px">
-              <li *ngFor="let item of orcamento.itens">
-                <span class="bold-text" style="font-size: 16px">{{
-                  item.nome
-                }}</span>
-                -> Quantidade: {{ item.quantidade }} x Altura:
-                {{ item.altura }} x Largura: {{ item.largura }} x Valor:
-                {{ item.valor }} - TOTAL
-                {{
-                  item.altura * item.largura * item.valor * item.quantidade
-                    | currency : "BRL"
-                }}
-              </li>
-            </ul>
             <p class="bold-text" style="font-size: 20px">
-              Total: {{ orcamento.total | currency : "BRL" }}
+              Total: {{ conta.total | currency : "BRL" }}
             </p>
+            <button mat-icon-button (click)="gerarQrCodePix(conta)">
+              <mat-icon>qr_code</mat-icon>
+            </button>
           </mat-card-content>
-          <div>
-            <div class="m-3 mt-5">
-              <div>
-                <app-orcamento-pdf [orcamento]="orcamento"></app-orcamento-pdf>
-              </div>
-              <div>
-                <button
-                  class="mb-3 mt-3"
-                  mat-stroked-button
-                  color="warn"
-                  (click)="deletarOrcamento(orcamento)"
-                >
-                  Excluir
-                </button>
-              </div>
-            </div>
-          </div>
         </mat-card>
       </div>
     </div>

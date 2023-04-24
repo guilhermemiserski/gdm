@@ -3,61 +3,51 @@
     <app-sidebar></app-sidebar>
 
     <div class="main">
-      <h2 class="text-center mt-3">Novo orçamento</h2>
+      <form
+        class="mat-elevation-z2"
+        [formGroup]="orcamentoForm"
+      >
+        <h2 class="text-center mt-3">Novo orçamento</h2>
 
-      <form class="m-5" [formGroup]="orcamentoForm" (ngSubmit)="onSubmit()">
-        <div class="form-group mb-3">
-          <label for="cliente">Cliente:</label>
+        <mat-form-field class="mb-3 col-6">
+          <mat-label>Cliente</mat-label>
           <input
             type="text"
-            class="form-control"
-            id="cliente"
-            formControlName="cliente"
             placeholder="Fulano da Silva"
+            aria-label="Cliente"
+            matInput
+            [formControl]="myControl"
+            [matAutocomplete]="auto"
           />
-          <div
-            class="invalid-feedback"
-            *ngIf="
-              orcamentoForm.controls['cliente'].invalid &&
-              (orcamentoForm.controls['cliente'].dirty ||
-                orcamentoForm.controls['cliente'].touched)
-            "
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option
+              *ngFor="let option of filteredOptions | async"
+              [value]="option"
+            >
+              {{ option.nome }}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error
+            *ngIf="myControl.invalid && (myControl.dirty || myControl.touched)"
           >
             Campo obrigatório
-          </div>
-        </div>
+          </mat-error>
+        </mat-form-field>
 
-        <div class="form-group mb-3">
-          <label for="endereco">Endereço:</label>
+        <mat-form-field class="mb-3 col-4">
+          <mat-label>Validade</mat-label>
           <input
-            type="text"
-            class="form-control"
-            id="endereco"
-            formControlName="endereco"
-            placeholder="Rua Anita Garibaldi, 322"
-          />
-          <div
-            class="invalid-feedback"
-            *ngIf="
-              orcamentoForm.controls['endereco'].invalid &&
-              (orcamentoForm.controls['endereco'].dirty ||
-                orcamentoForm.controls['endereco'].touched)
-            "
-          >
-            Campo obrigatório
-          </div>
-        </div>
-
-        <div class="form-group mb-3">
-          <label for="validade">Validade:</label>
-          <input
-            type="date"
-            class="form-control"
-            id="validade"
+            matInput
+            [matDatepicker]="picker"
             formControlName="validade"
+            placeholder="Escolha uma data"
           />
-          <div
-            class="invalid-feedback"
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error
             *ngIf="
               orcamentoForm.controls['validade'].invalid &&
               (orcamentoForm.controls['validade'].dirty ||
@@ -65,43 +55,52 @@
             "
           >
             Campo obrigatório
-          </div>
-        </div>
+          </mat-error>
+        </mat-form-field>
 
-        <div>
-          <h3>Itens:</h3>
-          <p *ngIf="orcamento.itens.length == 0">Você ainda não inseriu nenhum item para esse orçamento</p>
-          <div
-            *ngFor="let item of orcamento.itens; let i = index"
-            class="row align-items-center mb-2"
-          >
-            <div class="col-8">
-              {{ item.nome }} ({{ item.quantidade }} x {{ item.valor | currency:"BRL" }}) = 
-              {{ item.quantidade * item.valor | currency:"BRL"}}
+        <mat-card class="text-white mb-5">
+          <mat-card-header>
+            <mat-card-title>Itens</mat-card-title>
+            <mat-card-subtitle *ngIf="orcamento.itens.length == 0"
+              >Você ainda não inseriu nenhum item para esse
+              orçamento</mat-card-subtitle
+            >
+          </mat-card-header>
+          <mat-card-content>
+            <div
+              *ngFor="let item of orcamento.itens; let i = index"
+              class="row align-items-center mb-2"
+            >
+              <div class="col-5">
+                {{ item.nome }} (Quantidade: {{ item.quantidade }} x
+                Altura: {{ item.altura}} x Largura: {{ item.largura }} x
+                Valor m²: {{ item.valor | currency : "BRL" }}) =
+                {{ item.quantidade * item.altura * item.largura * item.valor | currency : "BRL" }}
+              </div>
+              <div class="col-4 text-right">
+                <button
+                  mat-icon-button
+                  color="warn"
+                  aria-label="Remover"
+                  (click)="removerItem(i)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
             </div>
-            <div class="col-4 text-right">
-              <button
-                type="button"
-                class="btn btn-sm btn-danger"
-                (click)="removerItem(i)"
-              >
-                Remover
-              </button>
-            </div>
-          </div>
-        </div>
+          </mat-card-content>
+        </mat-card>
 
-        <div class="form-group mb-3">
-          <label for="nomeItem">Nome do item:</label>
+        <mat-form-field class="mb-3 col-4">
+          <mat-label>Nome do item</mat-label>
           <input
             type="text"
-            class="form-control"
             id="nomeItem"
             formControlName="nomeItem"
-            placeholder="Janela vidro temperado 1x1"
+            matInput
+            placeholder="Janela"
           />
-          <div
-            class="invalid-feedback"
+          <mat-error
             *ngIf="
               orcamentoForm.controls['nomeItem'].invalid &&
               (orcamentoForm.controls['nomeItem'].dirty ||
@@ -109,19 +108,56 @@
             "
           >
             Campo obrigatório
-          </div>
-        </div>
-        <div class="form-group mb-3">
-          <label for="quantidade">Quantidade:</label>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="mb-3">
+          <mat-label>Altura</mat-label>
           <input
-            type="text"
+            id="altura"
+            formControlName="altura"
+            matInput
+            placeholder="2.00"
+          />
+          <mat-error
+            *ngIf="
+              orcamentoForm.controls['altura'].invalid &&
+              (orcamentoForm.controls['altura'].dirty ||
+                orcamentoForm.controls['altura'].touched)
+            "
+          >
+            Campo obrigatório
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="mb-3">
+          <mat-label>Largura</mat-label>
+          <input
+            id="largura"
+            formControlName="largura"
+            matInput
+            placeholder="2.00"
+          />
+          <mat-error
+            *ngIf="
+              orcamentoForm.controls['largura'].invalid &&
+              (orcamentoForm.controls['largura'].dirty ||
+                orcamentoForm.controls['largura'].touched)
+            "
+          >
+            Campo obrigatório
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="mb-3">
+          <mat-label>Quantidade</mat-label>
+          <input
+            matInput
             id="quantidade"
             formControlName="quantidade"
-            class="form-control"
             placeholder="2"
           />
-          <div
-            class="invalid-feedback"
+          <mat-error
             *ngIf="
               orcamentoForm.controls['quantidade'].invalid &&
               (orcamentoForm.controls['quantidade'].dirty ||
@@ -134,26 +170,22 @@
             <div *ngIf="orcamentoForm.controls['quantidade'].errors.min">
               Quantidade deve ser maior do que zero
             </div>
-          </div>
-        </div>
-        <div class="form-group mb-3">
-          <label for="valor">Valor unitário:</label>
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">R$</span>
-            </div>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="mb-3">
+          <mat-label>Valor m²</mat-label>
+          <div>
             <input
-              type="text"
+              matInput
               currency="BRL"
               id="valor"
               formControlName="valor"
               step="0.01"
-              class="form-control"
               placeholder="200.00"
             />
           </div>
-          <div
-            class="invalid-feedback"
+          <mat-error
             *ngIf="
               orcamentoForm.controls['valor'].invalid &&
               (orcamentoForm.controls['valor'].dirty ||
@@ -166,31 +198,23 @@
             <div *ngIf="orcamentoForm.controls['valor'].errors.min">
               Valor deve ser maior do que zero
             </div>
-          </div>
-        </div>
+          </mat-error>
+        </mat-form-field>
+
+        <br />
 
         <button
-          type="button"
-          class="btn btn-primary btn-lg mb-3 mt-3"
-          [disabled]="
-            !orcamentoForm.get('quantidade').valid ||
-            !orcamentoForm.get('valor').valid ||
-            !orcamentoForm.get('nomeItem').valid
-          "
+          class="mb-3"
+          mat-stroked-button
           (click)="adicionarItem()"
+          color="accent"
         >
           Adicionar item
         </button>
 
         <br />
 
-        <button
-          type="submit"
-          class="btn btn-primary btn-lg"
-          [disabled]="
-            !orcamentoForm.get('cliente').valid || orcamento.itens.length == 0
-          "
-        >
+        <button mat-raised-button color="accent" (click)="enviarOrcamento()">
           Enviar orçamento
         </button>
       </form>

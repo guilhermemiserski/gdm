@@ -1,38 +1,94 @@
-<form (submit)="enviarCliente()" [formGroup]="clienteForm" class="needs-validation" novalidate>
-    <div class="form-group">
-      <label for="nome">Nome:</label>
-      <input type="text" class="form-control" formControlName="nome" id="nome" required>
-      <div *ngIf="submitted && clienteForm.controls['nome'].invalid" class="invalid-feedback">
-        Por favor, insira um nome válido.
-      </div>
+<div class="container-fluid">
+  <div class="row">
+    <app-sidebar></app-sidebar>
+    <div class="main">
+      <form
+        class="mat-elevation-z2"
+        (submit)="enviarCliente()"
+        [formGroup]="clienteForm"
+        novalidate
+      >
+        <h2 class="text-center mt-3">Novo cliente</h2>
+        <div class="row">
+          <div class="col-6">
+            <mat-form-field>
+              <mat-label>Nome</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="nome"
+                id="nome"
+                required
+              />
+              <mat-error
+                *ngIf="submitted && clienteForm.controls['nome'].invalid"
+                >Por favor, insira um nome válido.</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <div class="col-4">
+            <mat-form-field>
+              <mat-label>CPF</mat-label>
+              <input
+                matInput
+                type="text"
+                id="cpf"
+                #cpfInput
+                formControlName="cpf"
+                required
+              />
+              <mat-error
+                *ngIf="submitted && clienteForm.controls['cpf'].invalid"
+              >
+                Por favor, insira um CPF válido.
+              </mat-error>
+              <mat-error *ngIf="submitted && !cpfValido">
+                Por favor, insira um CPF válido.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-6">
+            <mat-form-field>
+              <mat-label>Endereço</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="endereco"
+                id="endereco"
+                required
+              />
+              <mat-error
+                *ngIf="submitted && clienteForm.controls['endereco'].invalid"
+                >Por favor, insira um endereço válido.</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <div class="col-4">
+            <mat-form-field>
+              <mat-label>Telefone</mat-label>
+              <input
+                #telefoneInput
+                matInput
+                type="text"
+                formControlName="telefone"
+                id="telefone"
+                required
+              />
+              <mat-error
+                *ngIf="submitted && clienteForm.controls['telefone'].invalid"
+                >Por favor, insira um número de telefone válido.</mat-error
+              >
+            </mat-form-field>
+          </div>
+        </div>
+
+        <button class="mt-3" mat-raised-button color="accent" type="submit">
+          Cadastrar
+        </button>
+      </form>
     </div>
-  
-    <div class="form-group">
-      <label for="cpf">CPF:</label>
-      <input type="text" class="form-control" formControlName="cpf" id="cpf" [mask]="'000.000.000-00'" required>
-      <div *ngIf="submitted && clienteForm.controls['cpf'].invalid" class="invalid-feedback">
-        Por favor, insira um CPF válido.
-      </div>
-      <div *ngIf="submitted && !cpfValido" class="invalid-feedback">
-        Por favor, insira um CPF válido.
-      </div>
-    </div>
-  
-    <div class="form-group">
-      <label for="endereco">Endereço:</label>
-      <input type="text" class="form-control" formControlName="endereco" id="endereco" required>
-      <div *ngIf="submitted && clienteForm.controls['endereco'].invalid" class="invalid-feedback">
-        Por favor, insira um endereço válido.
-      </div>
-    </div>
-  
-    <div class="form-group">
-      <label for="telefone">Número de telefone:</label>
-      <input type="text" class="form-control" formControlName="telefone" id="telefone" required>
-      <div *ngIf="submitted && clienteForm.controls['telefone'].invalid" class="invalid-feedback">
-        Por favor, insira um número de telefone válido.
-      </div>
-    </div>
-  
-    <button type="submit" class="btn btn-primary">Cadastrar</button>
-  </form>
+  </div>
+</div>

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 export interface Cliente {
+  id: number;
   nome: string;
   cpf: string;
   endereco: string;
@@ -21,7 +22,7 @@ export class ClienteService {
     return this.http.post(this.apiURL, cliente);
   }
 
-  buscarClientes(): Observable<any> {
-    return this.http.get(this.apiURL);
+  buscarClientes(): Observable<Cliente[]> {
+    return this.http.get<Cliente[]>(this.apiURL);
   }
 }

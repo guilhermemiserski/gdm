@@ -15,6 +15,15 @@
     font-size: 1.5rem;
     padding: 1rem;
   }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-link i {
+    margin-right: 5px;
+  }
   
   .sidebar .nav-item {
     margin: 0.5rem 0;
@@ -41,3 +50,58 @@
     padding: 2rem;
   }
   
+  .active {
+    background-color: #343a40;
+    color: #fff;
+    position: relative;
+  }
+  
+  .active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: #E91E63;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .active:hover::after,
+  .active:focus::after {
+    transform: scaleX(1);
+  }
+
+  .mat-toolbar {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    font-size: 12px;
+  }
+  
+  .created-by {
+    display: flex;
+    align-items: center;
+  }
+  
+  .copy-right {
+    display: flex;
+    align-items: center;
+  }
+  
+  mat-icon {
+    font-size: 12px;
+    text-align: center;
+    padding: 4px;
+  }

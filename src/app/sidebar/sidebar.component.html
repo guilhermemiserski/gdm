@@ -1,16 +1,24 @@
 <nav class="navbar navbar-dark bg-dark sidebar">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="/">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/orcamentos">Orçamentos</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/inserir-orcamento">Inserir orçamento</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/inserir-cliente">Inserir cliente</a>
-      </li>
-    </ul>
-  </nav>
+  <ul class="navbar-nav">
+    <li
+      class="nav-item"
+      *ngFor="let link of links; let i = index"
+      [ngClass]="{ active: i === activeLink }"
+    >
+      <a class="nav-link" [routerLink]="link.path">
+        <i class="material-icons">{{ link.icon }}</i>
+        {{ link.label }}
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<footer class="mat-elevation-z2 p-3" style="background-color: #E91E63; color: #fff; position: fixed; bottom: 0; right: 0; width: 100%; padding: 8px;">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+    </div>
+    <div>
+      <span style="font-size: 12px;">feito com<mat-icon style="vertical-align: middle; font-size: 10px;">favorite</mat-icon>por guilherme miserski &copy;</span>
+    </div>
+  </div>
+</footer>

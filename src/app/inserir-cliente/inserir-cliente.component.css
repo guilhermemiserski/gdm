@@ -1,0 +1,12 @@
+.main {
+  padding-left: 12rem;
+}
+
+form {
+  margin: 4rem;
+  padding: 1rem;
+}
+
+mat-form-field {
+  width: 100%;
+}

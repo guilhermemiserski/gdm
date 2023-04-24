@@ -9,6 +9,8 @@ import Swal from 'sweetalert2'
 })
 export class OrcamentosComponent implements OnInit {
   orcamentos: Orcamento[] = [];
+  orcamentosFiltered: Orcamento[] = [];
+  searchTerm: string = '';
 
   constructor(private orcamentoService: OrcamentoService) { }
 
@@ -19,15 +21,27 @@ export class OrcamentosComponent implements OnInit {
   obterOrcamentos(): void {
     this.orcamentoService.buscarOrcamentos().subscribe(orcamentos => {
       this.orcamentos = orcamentos;
+      this.orcamentosFiltered = orcamentos;
       this.calcularTotal();
     });
+  }
+
+  searchOrcamentos(): void {
+    this.orcamentosFiltered = this.orcamentos.filter((orcamento) =>
+      orcamento.cliente.nome
+        .toLowerCase()
+        .includes(this.searchTerm.toLowerCase()) ||
+      orcamento.cliente.endereco
+        .toLowerCase()
+        .includes(this.searchTerm.toLowerCase())
+    );
   }
 
   calcularTotal(): void {
     for (const orcamento of this.orcamentos) {
       let total = 0;
       for (const item of orcamento.itens) {
-        total += item.quantidade * item.valor;
+        total += item.altura * item.largura * item.valor * item.quantidade;
       }
       orcamento.total = total;
     }
@@ -49,5 +63,10 @@ export class OrcamentosComponent implements OnInit {
             });
         }
       });
+  }
+
+  toggleClienteAceitou(orcamento: Orcamento): void {
+    orcamento.cliente_aceitou = !orcamento.cliente_aceitou;
+    this.orcamentoService.alterarOrcamento(orcamento).subscribe();
   }
 }
