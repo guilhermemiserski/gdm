@@ -26,7 +26,7 @@ export interface Orcamento {
 })
 export class OrcamentoService {
 
-    private apiURL = 'http://localhost:8000/orcamentos/';
+    private apiURL = 'http://g7miserski.pythonanywhere.com/orcamentos/';
 
     constructor(private http: HttpClient) {}
 
