@@ -14,7 +14,7 @@ export interface Cliente {
   providedIn: 'root',
 })
 export class ClienteService {
-  private apiURL = 'http://g7miserski.pythonanywhere.com/clientes/';
+  private apiURL = 'https://g7miserski.pythonanywhere.com/clientes/';
 
   constructor(private http: HttpClient) {}
 
